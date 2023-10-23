@@ -1,3 +1,5 @@
+use tide::prelude::json;
+
 #[async_std::main]
 async fn main() -> tide::Result<()> {
     let mut app = tide::new();
@@ -16,6 +18,12 @@ async fn main() -> tide::Result<()> {
             .header("Server", "tide")
             .content_type(tide::http::mime::HTML)
             .build())
+    });
+    app.at("/animals").get(|_| async {
+        Ok(json!([
+            { "name": "chashu", "age": 8 },
+            { "name": "nori",   "age": 3 }
+        ]))
     });
     app.listen("127.0.0.1:8080").await?;
     Ok(())
