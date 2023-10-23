@@ -10,6 +10,13 @@ async fn main() -> tide::Result<()> {
             .content_type(tide::http::mime::HTML)
             .build())
     });
+    app.at("/:user").get(|req: tide::Request<()>| async move {
+        Ok(tide::Response::builder(200)
+            .body(format!("<html><h1>Hello, {}!</h1></html>", req.param("user")?))
+            .header("Server", "tide")
+            .content_type(tide::http::mime::HTML)
+            .build())
+    });
     app.listen("127.0.0.1:8080").await?;
     Ok(())
 }
